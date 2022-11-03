@@ -6,6 +6,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class StarfishCollector extends ApplicationAdapter {
@@ -27,23 +29,30 @@ public class StarfishCollector extends ApplicationAdapter {
 
   private boolean isWon;
 
+  private Array<Disposable> disposeList;
+
 
   @Override
   public void create() {
+    disposeList = new Array<>();
     batch = new SpriteBatch();
+    disposeList.add(batch);
 
     turtleTexture = new Texture(Gdx.files.internal("starfish/turtle-1.png"));
     turtleX = 20;
     turtleY = 20;
     turtleRectangle = new Rectangle(turtleX, turtleY, turtleTexture.getWidth(), turtleTexture.getHeight());
+    disposeList.add(turtleTexture);
 
     starfishTexture = new Texture(Gdx.files.internal("starfish/starfish.png"));
     turtleX = 380;
     turtleY = 380;
     starfishRectangle = new Rectangle(starfishX, starfishY, starfishTexture.getWidth(), starfishTexture.getHeight());
+    disposeList.add(starfishTexture);
 
     oceanTexture = new Texture(Gdx.files.internal("starfish/water.jpg"));
     winMessageTexture = new Texture(Gdx.files.internal("starfish/you-win.png"));
+    disposeList.add(oceanTexture, winMessageTexture);
 
     isWon = false;
   }
@@ -95,5 +104,7 @@ public class StarfishCollector extends ApplicationAdapter {
 
   @Override
   public void dispose() {
+    Gdx.app.log("dispose", "disposing");
+    disposeList.forEach(Disposable::dispose);
   }
 }
