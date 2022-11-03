@@ -66,9 +66,9 @@ public class Drop extends ApplicationAdapter {
     batch.setProjectionMatrix(camera.combined);
     batch.begin();
     batch.draw(bucketImage, bucket.x, bucket.y);
-		for(Rectangle raindrop: rainDrops) {
-			batch.draw(dropImage, raindrop.x, raindrop.y);
-		}
+    for (var raindrop : rainDrops) {
+      batch.draw(dropImage, raindrop.x, raindrop.y);
+    }
     batch.end();
 
     if (Gdx.input.isTouched()) {
@@ -87,24 +87,23 @@ public class Drop extends ApplicationAdapter {
     if (bucket.x > 800 - 64) bucket.x = 800 - 64;
 
 
-		if (TimeUtils.nanoTime() - lastDropTime > 1_000_000_000) spawnRainDrop();
+    if (TimeUtils.nanoTime() - lastDropTime > 1_000_000_000) spawnRainDrop();
 
-		for (Iterator<Rectangle> iter = rainDrops.iterator(); iter.hasNext(); ) {
-			Rectangle raindrop = iter.next();
-			raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
-			if (raindrop.y + 64 < 0) iter.remove();
-			if (raindrop.overlaps(bucket)) {
-				dropSound.play();
-				iter.remove();
-			}
-		}
+    for (Iterator<Rectangle> iter = rainDrops.iterator(); iter.hasNext(); ) {
+      Rectangle raindrop = iter.next();
+      raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
+      if (raindrop.y + 64 < 0) iter.remove();
+      if (raindrop.overlaps(bucket)) {
+        dropSound.play();
+        iter.remove();
+      }
+    }
 
 
-
-	}
+  }
 
   private void spawnRainDrop() {
-    Rectangle rainDrop = new Rectangle();
+    var rainDrop = new Rectangle();
     rainDrop.x = MathUtils.random(0, 800 - 64);
     rainDrop.y = 480;
     rainDrop.width = 64;
@@ -115,10 +114,10 @@ public class Drop extends ApplicationAdapter {
 
   @Override
   public void dispose() {
-		dropImage.dispose();
-		bucketImage.dispose();
-		dropSound.dispose();
-		rainMusic.dispose();
-		batch.dispose();
+    dropImage.dispose();
+    bucketImage.dispose();
+    dropSound.dispose();
+    rainMusic.dispose();
+    batch.dispose();
   }
 }
