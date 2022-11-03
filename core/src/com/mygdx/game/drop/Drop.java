@@ -33,11 +33,11 @@ public class Drop extends ApplicationAdapter {
 
   @Override
   public void create() {
-    dropImage = new Texture(Gdx.files.internal("drop.png"));
-    bucketImage = new Texture(Gdx.files.internal("bucket.png"));
+    dropImage = new Texture(Gdx.files.internal("drop/drop.png"));
+    bucketImage = new Texture(Gdx.files.internal("drop/bucket.png"));
 
-    dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
-    rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
+    dropSound = Gdx.audio.newSound(Gdx.files.internal("drop/drop.wav"));
+    rainMusic = Gdx.audio.newMusic(Gdx.files.internal("drop/rain.mp3"));
 
     rainMusic.setLooping(true);
     rainMusic.play();
