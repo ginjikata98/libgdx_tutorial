@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.mygdx.game.drop.Drop;
-import com.mygdx.game.starfish.StarfishCollector;
+import com.mygdx.game.starfish.StarfishGame;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
@@ -31,7 +31,7 @@ public class DesktopLauncher {
         config.setWindowedMode(800, 600);
         config.useVsync(true);
         config.setForegroundFPS(60);
-        app = new StarfishCollector();
+        app = new StarfishGame();
       }
     }
 

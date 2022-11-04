@@ -9,9 +9,11 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
 
 
 public class BaseActor extends Actor {
+  private static Rectangle worldBounds;
   private Animation<TextureRegion> animation;
   private float elapsedTime;
   private boolean animationPaused;
@@ -21,7 +23,6 @@ public class BaseActor extends Actor {
   private float maxSpeed;
   private float deceleration;
   private Polygon boundaryPolygon;
-  private static Rectangle worldBounds;
 
   public BaseActor(float x, float y, Stage s) {
     super();
@@ -41,21 +42,44 @@ public class BaseActor extends Actor {
     this(0, 0, s);
   }
 
-  public void act(float dt) {
-    super.act(dt);
-
-    if (!animationPaused) {
-      elapsedTime += dt;
-    }
-  }
-
-
   public static void setWorldBounds(float width, float height) {
     worldBounds = new Rectangle(0, 0, width, height);
   }
 
   public static void setWorldBounds(BaseActor ba) {
     setWorldBounds(ba.getWidth(), ba.getHeight());
+  }
+
+  public static Array<BaseActor> getList(Stage stage, String className) {
+    Array<BaseActor> list = new Array<>();
+
+    Class theClass = null;
+
+    try {
+      theClass = ClassReflection.forName(className);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    for (var a : stage.getActors()) {
+      if (theClass.isInstance(a)) {
+        list.add((BaseActor) a);
+      }
+    }
+
+    return list;
+  }
+
+  public static int count(Stage stage, String className) {
+    return getList(stage, className).size;
+  }
+
+  public void act(float dt) {
+    super.act(dt);
+
+    if (!animationPaused) {
+      elapsedTime += dt;
+    }
   }
 
   public void boundToWorld() {
@@ -162,6 +186,10 @@ public class BaseActor extends Actor {
     return animation.isAnimationFinished(elapsedTime);
   }
 
+  public float getSpeed() {
+    return velocityVec.len();
+  }
+
   public void setSpeed(float speed) {
     if (velocityVec.len() == 0) {
       velocityVec.set(speed, 0);
@@ -170,17 +198,12 @@ public class BaseActor extends Actor {
     }
   }
 
-  public float getSpeed() {
-    return velocityVec.len();
+  public float getMotionAngle() {
+    return velocityVec.angleDeg();
   }
 
   public void setMotionAngle(float angle) {
     velocityVec.setAngleDeg(angle);
-  }
-
-
-  public float getMotionAngle() {
-    return velocityVec.angleDeg();
   }
 
   public boolean isMoving() {
@@ -290,30 +313,6 @@ public class BaseActor extends Actor {
     }
     this.moveBy(mtv.normal.x * mtv.depth, mtv.normal.y * mtv.depth);
     return mtv.normal;
-  }
-
-  public static Array<BaseActor> getList(Stage stage, String className) {
-    Array<BaseActor> list = new Array<>();
-
-    Class theClass = null;
-
-    try {
-      theClass = Class.forName(className);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    for (var a : stage.getActors()) {
-      if (theClass.isInstance(a)) {
-        list.add((BaseActor) a);
-      }
-    }
-
-    return list;
-  }
-
-  public static int count(Stage stage, String className) {
-    return getList(stage, className).size;
   }
 
   public void alignCamera() {

@@ -2,9 +2,9 @@ package com.mygdx.game.starfish;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.mygdx.game.base.BaseActor;
-import com.mygdx.game.base.BaseGame;
+import com.mygdx.game.base.BaseScreen;
 
-public class StarfishCollector extends BaseGame {
+public class LevelScreen extends BaseScreen {
   private Turtle turtle;
   private boolean win;
 
