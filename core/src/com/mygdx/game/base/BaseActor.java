@@ -6,13 +6,13 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 
 
-public class BaseActor extends Actor {
+public class BaseActor extends Group {
   private static Rectangle worldBounds;
   private Animation<TextureRegion> animation;
   private float elapsedTime;
@@ -98,8 +98,6 @@ public class BaseActor extends Actor {
   }
 
   public void draw(Batch batch, float parentAlpha) {
-    super.draw(batch, parentAlpha);
-
     var color = getColor();
     batch.setColor(color.r, color.g, color.b, color.a);
 
@@ -108,6 +106,8 @@ public class BaseActor extends Actor {
           getX(), getY(), getOriginX(), getOriginY(),
           getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
     }
+
+    super.draw(batch, parentAlpha);
   }
 
   public void setAnimation(Animation<TextureRegion> anim) {
