@@ -1,4 +1,4 @@
-package com.mygdx.game.starfish;
+package com.mygdx.game.base;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,11 +7,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class ActorBeta extends Actor {
+public class BaseActor extends Actor {
   private TextureRegion textureRegion;
   private Rectangle rectangle;
 
-  public ActorBeta() {
+  public BaseActor() {
     super();
     textureRegion = new TextureRegion();
     rectangle = new Rectangle();
@@ -28,7 +28,7 @@ public class ActorBeta extends Actor {
     return rectangle;
   }
 
-  public boolean overlaps(ActorBeta other) {
+  public boolean overlaps(BaseActor other) {
     return this.getRectangle().overlaps(other.getRectangle());
   }
 
@@ -52,13 +52,13 @@ public class ActorBeta extends Actor {
     setTexture(new Texture(Gdx.files.internal(assetUrl)));
   }
 
-  public static ActorBeta fromTexture(Texture texture) {
-    var actor = new ActorBeta();
+  public static BaseActor fromTexture(Texture texture) {
+    var actor = new BaseActor();
     actor.setTexture(texture);
     return actor;
   }
 
-  public static ActorBeta fromTexture(String assetUrl) {
+  public static BaseActor fromTexture(String assetUrl) {
     return fromTexture(new Texture(Gdx.files.internal(assetUrl)));
   }
 

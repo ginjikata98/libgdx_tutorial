@@ -1,110 +1,38 @@
 package com.mygdx.game.starfish;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.base.BaseActor;
+import com.mygdx.game.base.BaseGame;
 
-public class StarfishCollector extends ApplicationAdapter {
-  private SpriteBatch batch;
-
-  private Texture turtleTexture;
-  private float turtleX;
-  private float turtleY;
-  private Rectangle turtleRectangle;
-
-
-  private Texture starfishTexture;
-  private float starfishX;
-  private float starfishY;
-  private Rectangle starfishRectangle;
-
-  private Texture oceanTexture;
-  private Texture winMessageTexture;
-
-  private boolean isWon;
-
-  private Array<Disposable> disposeList;
-
+public class StarfishCollector extends BaseGame {
+  private Turtle turtle;
+  private BaseActor starfish;
+  private BaseActor ocean;
+  private BaseActor winMessage;
 
   @Override
-  public void create() {
-    disposeList = new Array<>();
-    batch = new SpriteBatch();
-    disposeList.add(batch);
+  public void initialize() {
+    ocean = BaseActor.fromTexture("starfish/water.jpg");
+    mainStage.addActor(ocean);
 
-    turtleTexture = new Texture(Gdx.files.internal("starfish/turtle-1.png"));
-    turtleX = 20;
-    turtleY = 20;
-    turtleRectangle = new Rectangle(turtleX, turtleY, turtleTexture.getWidth(), turtleTexture.getHeight());
-    disposeList.add(turtleTexture);
+    starfish = BaseActor.fromTexture("starfish/starfish.png");
+    starfish.setPosition(380, 380);
+    mainStage.addActor(starfish);
 
-    starfishTexture = new Texture(Gdx.files.internal("starfish/starfish.png"));
-    turtleX = 380;
-    turtleY = 380;
-    starfishRectangle = new Rectangle(starfishX, starfishY, starfishTexture.getWidth(), starfishTexture.getHeight());
-    disposeList.add(starfishTexture);
+    turtle = new Turtle("starfish/turtle-1.png");
+    turtle.setPosition(200, 200);
+    mainStage.addActor(turtle);
 
-    oceanTexture = new Texture(Gdx.files.internal("starfish/water.jpg"));
-    winMessageTexture = new Texture(Gdx.files.internal("starfish/you-win.png"));
-    disposeList.add(oceanTexture, winMessageTexture);
-
-    isWon = false;
+    winMessage = BaseActor.fromTexture("starfish/you-win.png");
+    winMessage.setPosition(180, 180);
+    winMessage.setVisible(false);
+    mainStage.addActor(winMessage);
   }
 
   @Override
-  public void render() {
-    handleInput();
-    handleCollisions();
-    updateScreen();
-  }
-
-  private void handleInput() {
-    if (isWon) return;
-    if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-      turtleX--;
+  public void update(float dt) {
+    if (turtle.overlaps(starfish)) {
+      starfish.remove();
+      winMessage.setVisible(true);
     }
-    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-      turtleX++;
-    }
-    if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-      turtleY++;
-    }
-    if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-      turtleY--;
-    }
-    turtleRectangle.setPosition(turtleX, turtleY);
-  }
-
-  private void handleCollisions() {
-    if (turtleRectangle.overlaps(starfishRectangle)) {
-      isWon = true;
-    }
-  }
-
-  private void updateScreen() {
-    ScreenUtils.clear(0, 0, 0, 1);
-    batch.begin();
-    batch.draw(oceanTexture, 0, 0);
-    if (!isWon) {
-      batch.draw(starfishTexture, starfishX, starfishY);
-    }
-    batch.draw(turtleTexture, turtleX, turtleY);
-    if (isWon) {
-      batch.draw(winMessageTexture, 180, 180);
-    }
-    batch.end();
-  }
-
-
-  @Override
-  public void dispose() {
-    Gdx.app.log("dispose", "disposing");
-    disposeList.forEach(Disposable::dispose);
   }
 }

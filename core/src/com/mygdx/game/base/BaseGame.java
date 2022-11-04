@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.base;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public abstract class GameBeta extends Game {
+public abstract class BaseGame extends Game {
   protected Stage mainStage;
   protected Array<Disposable> disposeList;
 

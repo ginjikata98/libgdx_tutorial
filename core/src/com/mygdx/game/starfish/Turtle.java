@@ -2,8 +2,9 @@ package com.mygdx.game.starfish;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.mygdx.game.base.BaseActor;
 
-public class Turtle extends ActorBeta {
+public class Turtle extends BaseActor {
   public Turtle() {
     super();
   }
