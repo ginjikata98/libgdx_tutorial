@@ -1,12 +1,15 @@
 package com.mygdx.game.base;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public abstract class BaseScreen implements Screen {
+public abstract class BaseScreen implements Screen, InputProcessor {
 
   protected Stage mainStage;
   protected Stage uiStage;
@@ -47,13 +50,57 @@ public abstract class BaseScreen implements Screen {
   }
 
   public void show() {
+    var im = (InputMultiplexer) Gdx.input.getInputProcessor();
+    if (im == null) return;
+    im.addProcessor(this);
+    im.addProcessor(uiStage);
+    im.addProcessor(mainStage);
   }
 
   public void hide() {
+    var im = (InputMultiplexer) Gdx.input.getInputProcessor();
+    if (im == null) return;
+    im.removeProcessor(this);
+    im.removeProcessor(uiStage);
+    im.removeProcessor(mainStage);
   }
 
   public void dispose() {
     disposeList.forEach(Disposable::dispose);
+  }
+
+
+  // methods required by InputProcessor interface
+  public boolean keyDown(int keycode) {
+    return false;
+  }
+
+  public boolean keyUp(int keycode) {
+    return false;
+  }
+
+  public boolean keyTyped(char c) {
+    return false;
+  }
+
+  public boolean mouseMoved(int screenX, int screenY) {
+    return false;
+  }
+
+  public boolean scrolled(float amountX, float amountY) {
+    return false;
+  }
+
+  public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+    return false;
+  }
+
+  public boolean touchDragged(int screenX, int screenY, int pointer) {
+    return false;
+  }
+
+  public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+    return false;
   }
 
 }

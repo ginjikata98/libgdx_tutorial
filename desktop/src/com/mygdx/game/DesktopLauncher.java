@@ -10,13 +10,14 @@ import com.mygdx.game.starfish.StarfishGame;
 public class DesktopLauncher {
   private enum Games {
     drop,
-    starfish
+    starfish,
+    spacerocks
   }
 
   public static void main(String[] arg) {
     var config = new Lwjgl3ApplicationConfiguration();
     Game app = null;
-    var game = Games.starfish;
+    var game = Games.spacerocks;
 
     switch (game) {
       case drop -> {
@@ -28,6 +29,13 @@ public class DesktopLauncher {
       }
       case starfish -> {
         config.setTitle("Starfish Collector");
+        config.setWindowedMode(800, 600);
+        config.useVsync(true);
+        config.setForegroundFPS(60);
+        app = new StarfishGame();
+      }
+      case spacerocks -> {
+        config.setTitle("Space Rocks");
         config.setWindowedMode(800, 600);
         config.useVsync(true);
         config.setForegroundFPS(60);
