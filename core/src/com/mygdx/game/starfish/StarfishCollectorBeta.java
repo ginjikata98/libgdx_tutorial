@@ -1,6 +1,7 @@
 package com.mygdx.game.starfish;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,7 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class StarfishCollectorBeta extends ApplicationAdapter {
+public class StarfishCollectorBeta extends Game {
   private Turtle turtle;
   private ActorBeta starfish;
   private ActorBeta ocean;
