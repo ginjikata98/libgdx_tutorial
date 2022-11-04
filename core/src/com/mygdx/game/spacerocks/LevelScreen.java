@@ -28,6 +28,10 @@ public class LevelScreen extends BaseScreen {
       spaceShip.wrap();
     }
 
+    if (keycode == Input.Keys.SPACE) {
+      spaceShip.shoot();
+    }
+
     return false;
   }
 }

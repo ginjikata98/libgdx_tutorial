@@ -73,4 +73,13 @@ public class SpaceShip extends BaseActor {
     wrap2.centerAtActor(this);
   }
 
+  public void shoot() {
+    if (getStage() == null) return;
+
+    var laser = new Laser(getStage());
+    laser.centerAtActor(this);
+    laser.setRotation(getRotation());
+    laser.setMotionAngle(getRotation());
+  }
+
 }
