@@ -316,5 +316,20 @@ public class BaseActor extends Actor {
     return getList(stage, className).size;
   }
 
+  public void alignCamera() {
+    var cam = getStage().getCamera();
+    var viewport = getStage().getViewport();
+
+    // center camera on actor
+    cam.position.set(getX() + getOriginX(), getY() + getOriginY(), 0);
+
+    // bound camera to layout
+    cam.position.x = MathUtils.clamp(cam.position.x,
+        cam.viewportWidth / 2, worldBounds.width - cam.viewportWidth / 2);
+    cam.position.y = MathUtils.clamp(cam.position.y,
+        cam.viewportHeight / 2, worldBounds.height - cam.viewportHeight / 2);
+    cam.update();
+  }
+
 
 }
