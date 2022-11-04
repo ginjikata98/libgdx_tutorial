@@ -8,6 +8,11 @@ public class Turtle extends ActorBeta {
     super();
   }
 
+  public Turtle(String textureAsset) {
+    super();
+    setTexture(textureAsset);
+  }
+
   public void act(float dt) {
     super.act(dt);
 

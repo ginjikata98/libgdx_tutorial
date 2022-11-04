@@ -1,5 +1,6 @@
 package com.mygdx.game.starfish;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -45,8 +46,20 @@ public class ActorBeta extends Actor {
       batch.draw(textureRegion, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(),
           getScaleY(), getRotation());
     }
-
   }
 
+  public void setTexture(String assetUrl) {
+    setTexture(new Texture(Gdx.files.internal(assetUrl)));
+  }
+
+  public static ActorBeta fromTexture(Texture texture) {
+    var actor = new ActorBeta();
+    actor.setTexture(texture);
+    return actor;
+  }
+
+  public static ActorBeta fromTexture(String assetUrl) {
+    return fromTexture(new Texture(Gdx.files.internal(assetUrl)));
+  }
 
 }
