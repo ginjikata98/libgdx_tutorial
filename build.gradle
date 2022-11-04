@@ -1,5 +1,5 @@
 buildscript {
-    
+
 
     repositories {
         mavenLocal()
@@ -12,7 +12,7 @@ buildscript {
         classpath 'org.wisepersist:gwt-gradle-plugin:1.1.16'
         classpath 'org.gretty:gretty:3.0.7'
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.16'
-        
+
 
     }
 }
@@ -24,7 +24,6 @@ allprojects {
     ext {
         appName = "My GDX Game"
         gdxVersion = '1.11.0'
-        roboVMVersion = '2.3.16'
         box2DLightsVersion = '1.5'
         ashleyVersion = '1.7.4'
         aiVersion = '1.8.2'
@@ -45,21 +44,19 @@ allprojects {
 project(":desktop") {
     apply plugin: "java-library"
 
-
     dependencies {
         implementation project(":core")
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        
+        api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
     }
 }
 
 project(":core") {
     apply plugin: "java-library"
 
-
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
-        
+        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     }
 }

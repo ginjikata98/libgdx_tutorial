@@ -18,7 +18,7 @@ public class DesktopLauncher {
   public static void main(String[] arg) {
     var config = new Lwjgl3ApplicationConfiguration();
     Game app = null;
-    var game = Games.spacerocks;
+    var game = Games.starfish;
 
     switch (game) {
       case drop -> {
