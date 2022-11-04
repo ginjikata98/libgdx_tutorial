@@ -153,12 +153,12 @@ public class BaseActor extends Actor {
   }
 
   public void setMotionAngle(float angle) {
-    velocityVec.setAngle(angle);
+    velocityVec.setAngleDeg(angle);
   }
 
 
   public float getMotionAngle() {
-    return velocityVec.angle();
+    return velocityVec.angleDeg();
   }
 
   public boolean isMoving() {
@@ -170,7 +170,7 @@ public class BaseActor extends Actor {
   }
 
   public void accelerateAtAngle(float angle) {
-    accelerationVec.add(new Vector2(acceleration, 0).setAngle(angle));
+    accelerationVec.add(new Vector2(acceleration, 0).setAngleDeg(angle));
   }
 
   public void accelerateForward() {
@@ -253,6 +253,21 @@ public class BaseActor extends Actor {
 
   public void setOpacity(float opacity) {
     getColor().a = opacity;
+  }
+
+  public Vector2 preventOverlap(BaseActor other) {
+    var poly1 = this.getBoundaryPolygon();
+    var poly2 = other.getBoundaryPolygon();
+    if (!poly1.getBoundingRectangle().overlaps(poly2.getBoundingRectangle())) {
+      return null;
+    }
+    var mtv = new Intersector.MinimumTranslationVector();
+    boolean polygonOverlap = Intersector.overlapConvexPolygons(poly1, poly2, mtv);
+    if (!polygonOverlap) {
+      return null;
+    }
+    this.moveBy(mtv.normal.x * mtv.depth, mtv.normal.y * mtv.depth);
+    return mtv.normal;
   }
 
 }
