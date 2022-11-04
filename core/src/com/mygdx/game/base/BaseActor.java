@@ -276,7 +276,7 @@ public class BaseActor extends Actor {
     Class theClass = null;
 
     try {
-      theClass = Class.forName("com.mygdx.game." + className);
+      theClass = Class.forName(className);
     } catch (Exception e) {
       e.printStackTrace();
     }

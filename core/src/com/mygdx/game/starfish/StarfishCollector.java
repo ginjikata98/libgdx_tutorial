@@ -31,11 +31,11 @@ public class StarfishCollector extends BaseGame {
 
   @Override
   public void update(float dt) {
-    for (var rock : BaseActor.getList(mainStage, "starfish.Rock")) {
+    for (var rock : BaseActor.getList(mainStage, Rock.class.getCanonicalName())) {
       turtle.preventOverlap(rock);
     }
 
-    for (var starfishActor : BaseActor.getList(mainStage, "starfish.Starfish")) {
+    for (var starfishActor : BaseActor.getList(mainStage, Starfish.class.getCanonicalName())) {
       var starfish = (Starfish) starfishActor;
 
       if (turtle.overlaps(starfish) && !starfish.isCollected()) {
@@ -48,7 +48,7 @@ public class StarfishCollector extends BaseGame {
 
     }
 
-    if (BaseActor.count(mainStage, "starfish.Starfish") == 0 && !win) {
+    if (BaseActor.count(mainStage, Starfish.class.getCanonicalName()) == 0 && !win) {
       var youWinMessage = new BaseActor(mainStage);
       youWinMessage.loadTexture("starfish/you-win.png");
       youWinMessage.centerAtPosition(400, 300);
