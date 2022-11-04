@@ -2,6 +2,7 @@ package com.mygdx.game.spacerocks;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.base.BaseActor;
 
@@ -59,6 +60,17 @@ public class SpaceShip extends BaseActor {
 
     applyPhysics(dt);
     wrapAroundWorld();
+  }
+
+  public void wrap() {
+    if (getStage() == null) return;
+
+    var wrap1 = new Warp(getStage());
+    wrap1.centerAtActor(this);
+    setPosition(MathUtils.random(800), MathUtils.random(600));
+
+    var wrap2 = new Warp(getStage());
+    wrap2.centerAtActor(this);
   }
 
 }
