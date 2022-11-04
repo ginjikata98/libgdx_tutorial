@@ -14,6 +14,15 @@ public class LevelScreen extends BaseScreen {
     space.setSize(800, 600);
     BaseActor.setWorldBounds(space);
 
+    new Rock(600,500, mainStage);
+    new Rock(600,300, mainStage);
+    new Rock(600,100, mainStage);
+    new Rock(400,100, mainStage);
+    new Rock(200,100, mainStage);
+    new Rock(200,300, mainStage);
+    new Rock(200,500, mainStage);
+    new Rock(400,500, mainStage);
+
     spaceShip = new SpaceShip(400, 300, mainStage);
   }
 
