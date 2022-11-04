@@ -5,10 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
@@ -24,6 +21,7 @@ public class BaseActor extends Actor {
   private float maxSpeed;
   private float deceleration;
   private Polygon boundaryPolygon;
+  private static Rectangle worldBounds;
 
   public BaseActor(float x, float y, Stage s) {
     super();
@@ -49,6 +47,30 @@ public class BaseActor extends Actor {
     if (!animationPaused) {
       elapsedTime += dt;
     }
+  }
+
+
+  public static void setWorldBounds(float width, float height) {
+    worldBounds = new Rectangle(0, 0, width, height);
+  }
+
+  public static void setWorldBounds(BaseActor ba) {
+    setWorldBounds(ba.getWidth(), ba.getHeight());
+  }
+
+  public void boundToWorld() {
+    // check left edge
+    if (getX() < 0)
+      setX(0);
+    // check right edge
+    if (getX() + getWidth() > worldBounds.width)
+      setX(worldBounds.width - getWidth());
+    // check bottom edge
+    if (getY() < 0)
+      setY(0);
+    // check top edge
+    if (getY() + getHeight() > worldBounds.height)
+      setY(worldBounds.height - getHeight());
   }
 
   public void draw(Batch batch, float parentAlpha) {

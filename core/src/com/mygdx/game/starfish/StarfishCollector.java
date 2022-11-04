@@ -13,6 +13,7 @@ public class StarfishCollector extends BaseGame {
     var ocean = new BaseActor(mainStage);
     ocean.loadTexture("starfish/water.jpg");
     ocean.setSize(800, 600);
+    BaseActor.setWorldBounds(ocean);
 
     new Starfish(400, 400, mainStage);
     new Starfish(500, 100, mainStage);

@@ -43,6 +43,8 @@ public class Turtle extends BaseActor {
     if (getSpeed() > 0) {
       setRotation(getMotionAngle());
     }
+
+    boundToWorld();
   }
 
 }
