@@ -16,6 +16,9 @@ public class TurtleV2 extends BaseActorV2 {
 
     loadAnimationFromFiles(filenames, 0.3f, true);
 
+    setBoundaryPolygon(8);
+
+
     setAcceleration(400);
     setMaxSpeed(100);
     setDeceleration(400);
