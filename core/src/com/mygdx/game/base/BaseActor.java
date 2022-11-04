@@ -270,4 +270,29 @@ public class BaseActor extends Actor {
     return mtv.normal;
   }
 
+  public static Array<BaseActor> getList(Stage stage, String className) {
+    Array<BaseActor> list = new Array<>();
+
+    Class theClass = null;
+
+    try {
+      theClass = Class.forName("com.mygdx.game." + className);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    for (var a : stage.getActors()) {
+      if (theClass.isInstance(a)) {
+        list.add((BaseActor) a);
+      }
+    }
+
+    return list;
+  }
+
+  public static int count(Stage stage, String className) {
+    return getList(stage, className).size;
+  }
+
+
 }
