@@ -9,7 +9,7 @@ import com.mygdx.game.base.BaseActor;
 public class SpaceShip extends BaseActor {
   private Thrusters thrusters;
   private Shield shield;
-  private int shieldPower;
+  public int shieldPower;
 
   public SpaceShip(float x, float y, Stage s) {
     super(x, y, s);
