@@ -1,11 +1,13 @@
 package com.mygdx.game.spacerocks;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.mygdx.game.base.BaseActor;
 import com.mygdx.game.base.BaseScreen;
 
 public class LevelScreen extends BaseScreen {
   private SpaceShip spaceShip;
+  private boolean gameOver;
 
   @Override
   public void initialize() {
@@ -24,6 +26,8 @@ public class LevelScreen extends BaseScreen {
     new Rock(400, 500, mainStage);
 
     spaceShip = new SpaceShip(400, 300, mainStage);
+
+    gameOver = false;
   }
 
   @Override
@@ -36,6 +40,14 @@ public class LevelScreen extends BaseScreen {
           boom.centerAtActor(spaceShip);
           spaceShip.remove();
           spaceShip.setPosition(-1000, -1000);
+
+          var messageLose = new BaseActor(0, 0, uiStage);
+          messageLose.loadTexture("spacerocks/message-lose.png");
+          messageLose.centerAtPosition(400, 300);
+          messageLose.setOpacity(0);
+          messageLose.addAction(Actions.fadeIn(1));
+          gameOver = true;
+
         } else {
           spaceShip.shieldPower -= 34;
           var boom = new Explosion(mainStage);
@@ -52,6 +64,15 @@ public class LevelScreen extends BaseScreen {
           rockActor.remove();
         }
       }
+    }
+
+    if (!gameOver && BaseActor.count(mainStage, Rock.class.getCanonicalName()) == 0) {
+      var messageWin = new BaseActor(uiStage);
+      messageWin.loadTexture("spacerocks/message-win.png");
+      messageWin.centerAtPosition(400, 300);
+      messageWin.setOpacity(0);
+      messageWin.addAction(Actions.fadeIn(1));
+      gameOver = true;
     }
 
   }
