@@ -1,38 +1,41 @@
 package com.mygdx.game.starfish;
 
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.mygdx.game.base.BaseActor;
 import com.mygdx.game.base.BaseGame;
 
 public class StarfishCollector extends BaseGame {
   private Turtle turtle;
-  private BaseActor starfish;
+  private Starfish starfish;
   private BaseActor ocean;
-  private BaseActor winMessage;
 
   @Override
   public void initialize() {
-    ocean = BaseActor.fromTexture("starfish/water.jpg");
-    mainStage.addActor(ocean);
+    ocean = new BaseActor(mainStage);
+    ocean.loadTexture("starfish/water.jpg");
+    ocean.setSize(800, 600);
 
-    starfish = BaseActor.fromTexture("starfish/starfish.png");
-    starfish.setPosition(380, 380);
-    mainStage.addActor(starfish);
+    starfish = new Starfish(380, 380, mainStage);
 
-    turtle = new Turtle("starfish/turtle-1.png");
-    turtle.setPosition(200, 200);
-    mainStage.addActor(turtle);
-
-    winMessage = BaseActor.fromTexture("starfish/you-win.png");
-    winMessage.setPosition(180, 180);
-    winMessage.setVisible(false);
-    mainStage.addActor(winMessage);
+    turtle = new Turtle(200, 200, mainStage);
   }
 
   @Override
   public void update(float dt) {
-    if (turtle.overlaps(starfish)) {
-      starfish.remove();
-      winMessage.setVisible(true);
+
+    if (turtle.overlaps(starfish) && !starfish.isCollected()) {
+      starfish.collect();
+
+      var whirl = new Whirlpool(0, 0, mainStage);
+      whirl.centerAtActor(starfish);
+      whirl.setOpacity(0.25f);
+
+      var youWinMessage = new BaseActor(mainStage);
+      youWinMessage.loadTexture("starfish/you-win.png");
+      youWinMessage.centerAtPosition(400, 300);
+      youWinMessage.setOpacity(0);
+      youWinMessage.addAction(Actions.delay(1));
+      youWinMessage.addAction(Actions.after(Actions.fadeIn(1)));
     }
   }
 }

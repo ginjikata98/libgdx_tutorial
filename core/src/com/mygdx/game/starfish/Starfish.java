@@ -2,9 +2,9 @@ package com.mygdx.game.starfish;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.mygdx.game.base.BaseActorV2;
+import com.mygdx.game.base.BaseActor;
 
-public class Starfish extends BaseActorV2 {
+public class Starfish extends BaseActor {
   private boolean collected;
 
   public Starfish(float x, float y, Stage s) {
@@ -12,7 +12,7 @@ public class Starfish extends BaseActorV2 {
 
     collected = false;
 
-    loadTexture("starfishv2/starfish.png");
+    loadTexture("starfish/starfish.png");
     setBoundaryPolygon(8);
 
     var spin = Actions.rotateBy(30, 1);
