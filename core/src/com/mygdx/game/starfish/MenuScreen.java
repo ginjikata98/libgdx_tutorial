@@ -17,11 +17,8 @@ public class MenuScreen extends BaseScreen {
 
     var title = new BaseActor(mainStage);
     title.loadTexture("starfish/starfish-collector.png");
-    title.centerAtPosition(400, 300);
-    title.moveBy(0, 100);
 
     var startButton = new TextButton("Start", BaseGame.textButtonStyle);
-    startButton.setPosition(150, 150);
     uiStage.addActor(startButton);
     startButton.addListener((e) -> {
       if (!(e instanceof InputEvent) || !((InputEvent) e).getType().equals(InputEvent.Type.touchDown)) return false;
@@ -30,13 +27,17 @@ public class MenuScreen extends BaseScreen {
     });
 
     var quitButton = new TextButton("Quit", BaseGame.textButtonStyle);
-    quitButton.setPosition(500, 150);
     uiStage.addActor(quitButton);
     quitButton.addListener((e) -> {
       if (!(e instanceof InputEvent) || !((InputEvent) e).getType().equals(InputEvent.Type.touchDown)) return false;
       Gdx.app.exit();
       return false;
     });
+
+    uiTable.add(title).colspan(2);
+    uiTable.row();
+    uiTable.add(startButton);
+    uiTable.add(quitButton);
   }
 
   @Override

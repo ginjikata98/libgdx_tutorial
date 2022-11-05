@@ -39,7 +39,6 @@ public class LevelScreen extends BaseScreen {
 
     starfishLabel = new Label("Starfish left:", BaseGame.labelStyle);
     starfishLabel.setColor(Color.CYAN);
-    starfishLabel.setPosition(20, 520);
     uiStage.addActor(starfishLabel);
 
     var buttonStyle = new Button.ButtonStyle();
@@ -48,7 +47,6 @@ public class LevelScreen extends BaseScreen {
     buttonStyle.up = new TextureRegionDrawable(buttonRegion);
     var restartButton = new Button(buttonStyle);
     restartButton.setColor(Color.CYAN);
-    restartButton.setPosition(720, 520);
     restartButton.addListener(e -> {
       if (!(e instanceof InputEvent) || !((InputEvent) e).getType().equals(InputEvent.Type.touchDown)) {
         return false;
@@ -59,6 +57,11 @@ public class LevelScreen extends BaseScreen {
       return true;
     });
     uiStage.addActor(restartButton);
+
+    uiTable.pad(10);
+    uiTable.add(starfishLabel).top();
+    uiTable.add().expandX().expandY();
+    uiTable.add(restartButton).top();
 
     win = false;
   }

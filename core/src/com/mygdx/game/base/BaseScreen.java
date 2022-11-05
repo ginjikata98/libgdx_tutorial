@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -14,12 +15,16 @@ public abstract class BaseScreen implements Screen, InputProcessor {
   protected Stage mainStage;
   protected Stage uiStage;
   protected Array<Disposable> disposeList;
+  protected Table uiTable;
 
   public BaseScreen() {
     mainStage = new Stage();
     uiStage = new Stage();
     disposeList = new Array<>();
     disposeList.add(mainStage, uiStage);
+    uiTable = new Table();
+    uiTable.setFillParent(true);
+    uiStage.addActor(uiTable);
     initialize();
   }
 
