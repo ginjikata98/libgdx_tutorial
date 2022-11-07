@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.mygdx.game.breakout.BreakoutGame;
 import com.mygdx.game.drop.Drop;
 import com.mygdx.game.planedodger.PlaneDodgerGame;
 import com.mygdx.game.spacerocks.SpaceGame;
@@ -15,12 +16,13 @@ public class DesktopLauncher {
     starfish,
     spacerocks,
     planedodger,
+    breakout,
   }
 
   public static void main(String[] arg) {
     var config = new Lwjgl3ApplicationConfiguration();
     Game app = null;
-    var game = Games.planedodger;
+    var game = Games.breakout;
 
     switch (game) {
       case drop -> {
@@ -50,6 +52,13 @@ public class DesktopLauncher {
         config.useVsync(true);
         config.setForegroundFPS(60);
         app = new PlaneDodgerGame();
+      }
+      case breakout -> {
+        config.setTitle("Breakout");
+        config.setWindowedMode(800, 600);
+        config.useVsync(true);
+        config.setForegroundFPS(60);
+        app = new BreakoutGame();
       }
     }
 
