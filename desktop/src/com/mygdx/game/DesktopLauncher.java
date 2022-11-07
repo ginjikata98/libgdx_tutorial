@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.mygdx.game.drop.Drop;
+import com.mygdx.game.planedodger.PlaneDodgerGame;
 import com.mygdx.game.spacerocks.SpaceGame;
 import com.mygdx.game.starfish.StarfishGame;
 
@@ -12,13 +13,14 @@ public class DesktopLauncher {
   private enum Games {
     drop,
     starfish,
-    spacerocks
+    spacerocks,
+    planedodger,
   }
 
   public static void main(String[] arg) {
     var config = new Lwjgl3ApplicationConfiguration();
     Game app = null;
-    var game = Games.starfish;
+    var game = Games.planedodger;
 
     switch (game) {
       case drop -> {
@@ -41,6 +43,13 @@ public class DesktopLauncher {
         config.useVsync(true);
         config.setForegroundFPS(60);
         app = new SpaceGame();
+      }
+      case planedodger -> {
+        config.setTitle("Plane Dodger");
+        config.setWindowedMode(800, 600);
+        config.useVsync(true);
+        config.setForegroundFPS(60);
+        app = new PlaneDodgerGame();
       }
     }
 
