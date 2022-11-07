@@ -14,6 +14,12 @@ public class LevelScreen extends BaseScreen {
   int score;
   Label scoreLabel;
 
+  float enemyTimer;
+  float enemySpawnInterval;
+  float enemySpeed;
+  boolean gameOver;
+  BaseActor gameOverMessage;
+
   @Override
   public void initialize() {
     new Sky(0, 0, mainStage);
@@ -28,10 +34,19 @@ public class LevelScreen extends BaseScreen {
     starSpawnInterval = 4;
     score = 0;
     scoreLabel = new Label(Integer.toString(score), BaseGame.labelStyle);
+
+    enemyTimer = 0;
+    enemySpeed = 100;
+    enemySpawnInterval = 3;
+    gameOver = false;
+    gameOverMessage = new BaseActor(0, 0, uiStage);
+    gameOverMessage.loadTexture("planedodger/game-over.png");
+    gameOverMessage.setVisible(false);
+
     uiTable.pad(10);
     uiTable.add(scoreLabel);
     uiTable.row();
-    uiTable.add().expandY();
+    uiTable.add(gameOverMessage).expandY();
   }
 
   @Override
@@ -46,6 +61,33 @@ public class LevelScreen extends BaseScreen {
         star.remove();
         score++;
         scoreLabel.setText(Integer.toString(score));
+      }
+    }
+
+    if (gameOver) return;
+
+    enemyTimer += dt;
+    if (enemyTimer > enemySpawnInterval) {
+      var enemy = new Enemy(800, MathUtils.random(100, 500), mainStage);
+      enemy.setSpeed(enemySpeed);
+      enemyTimer = 0;
+      enemySpawnInterval -= 0.10f;
+      enemySpeed += 10;
+      if (enemySpawnInterval < 0.5f)
+        enemySpawnInterval = 0.5f;
+      if (enemySpeed > 400)
+        enemySpeed = 400;
+    }
+    for (BaseActor enemy : BaseActor.getList(mainStage, Enemy.class.getCanonicalName())) {
+      if (plane.overlaps(enemy)) {
+        plane.remove();
+        gameOver = true;
+        gameOverMessage.setVisible(true);
+      }
+      if (enemy.getX() + enemy.getWidth() < 0) {
+        score++;
+        scoreLabel.setText(Integer.toString(score));
+        enemy.remove();
       }
     }
   }
