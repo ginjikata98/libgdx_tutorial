@@ -24,7 +24,7 @@ public class DesktopLauncher {
   public static void main(String[] arg) {
     var config = new Lwjgl3ApplicationConfiguration();
     Game app = null;
-    var game = Games.puzzle;
+    var game = Games.planedodger;
 
     switch (game) {
       case drop -> {
