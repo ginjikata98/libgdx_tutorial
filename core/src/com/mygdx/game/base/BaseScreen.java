@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
@@ -106,6 +108,10 @@ public abstract class BaseScreen implements Screen, InputProcessor {
 
   public boolean touchUp(int screenX, int screenY, int pointer, int button) {
     return false;
+  }
+
+  public boolean isTouchDownEvent(Event e) {
+    return (e instanceof InputEvent) && ((InputEvent) e).getType().equals(InputEvent.Type.touchDown);
   }
 
 }

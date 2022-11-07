@@ -1,10 +1,11 @@
 package com.mygdx.game.starfish;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -18,6 +19,10 @@ public class LevelScreen extends BaseScreen {
   private boolean win;
   private Label starfishLabel;
   private DialogBox dialogBox;
+  private float audioVolume;
+  private Sound waterDrop;
+  private Music instrumental;
+  private Music oceanSurf;
 
   @Override
   public void initialize() {
@@ -49,20 +54,42 @@ public class LevelScreen extends BaseScreen {
     var restartButton = new Button(buttonStyle);
     restartButton.setColor(Color.CYAN);
     restartButton.addListener(e -> {
-      if (!(e instanceof InputEvent) || !((InputEvent) e).getType().equals(InputEvent.Type.touchDown)) {
+      if (!isTouchDownEvent(e)) {
         return false;
       }
+
+      instrumental.dispose();
+      oceanSurf.dispose();
 
       StarfishGame.setActiveScreen(new LevelScreen());
 
       return true;
     });
+
+    var buttonStyle2 = new Button.ButtonStyle();
+    Texture buttonTex2 = new Texture(Gdx.files.internal("starfish/audio.png"));
+    var buttonRegion2 = new TextureRegion(buttonTex2);
+    buttonStyle2.up = new TextureRegionDrawable(buttonRegion2);
+    var muteButton = new Button(buttonStyle2);
+    muteButton.setColor(Color.CYAN);
+    muteButton.addListener(e -> {
+      if (!isTouchDownEvent(e)) {
+        return false;
+      }
+      audioVolume = 1 - audioVolume;
+      instrumental.setVolume(audioVolume);
+      oceanSurf.setVolume(audioVolume);
+      return true;
+    });
+
+
     uiStage.addActor(restartButton);
 
     uiTable.pad(10);
     uiTable.add(starfishLabel).top();
     uiTable.add().expandX().expandY();
     uiTable.add(restartButton).top();
+    uiTable.add(muteButton).top();
 
     var sign1 = new Sign(20, 400, mainStage);
     sign1.setText("West Starfish Bay");
@@ -76,7 +103,18 @@ public class LevelScreen extends BaseScreen {
     dialogBox.alignCenter();
     dialogBox.setVisible(false);
     uiTable.row();
-    uiTable.add(dialogBox).colspan(3);
+    uiTable.add(dialogBox).colspan(4);
+
+    waterDrop = Gdx.audio.newSound(Gdx.files.internal("starfish/Water_Drop.ogg"));
+    instrumental = Gdx.audio.newMusic(Gdx.files.internal("starfish/Master_of_the_Feast.ogg"));
+    oceanSurf = Gdx.audio.newMusic(Gdx.files.internal("starfish/Ocean_Waves.ogg"));
+    audioVolume = 1.00f;
+    instrumental.setLooping(true);
+    instrumental.setVolume(audioVolume);
+    instrumental.play();
+    oceanSurf.setLooping(true);
+    oceanSurf.setVolume(audioVolume);
+    oceanSurf.play();
 
     win = false;
   }
@@ -92,6 +130,7 @@ public class LevelScreen extends BaseScreen {
 
       if (turtle.overlaps(starfish) && !starfish.isCollected()) {
         starfish.collect();
+        waterDrop.play(audioVolume);
 
         var whirl = new Whirlpool(0, 0, mainStage);
         whirl.centerAtActor(starfish);
