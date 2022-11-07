@@ -83,18 +83,18 @@ public class BaseActor extends Group {
   }
 
   public void boundToWorld() {
-    // check left edge
-    if (getX() < 0)
+    if (getX() < 0) {
       setX(0);
-    // check right edge
-    if (getX() + getWidth() > worldBounds.width)
+    }
+    if (getX() + getWidth() > worldBounds.width) {
       setX(worldBounds.width - getWidth());
-    // check bottom edge
-    if (getY() < 0)
+    }
+    if (getY() < 0) {
       setY(0);
-    // check top edge
-    if (getY() + getHeight() > worldBounds.height)
+    }
+    if (getY() + getHeight() > worldBounds.height) {
       setY(worldBounds.height - getHeight());
+    }
   }
 
   public void draw(Batch batch, float parentAlpha) {
@@ -112,9 +112,9 @@ public class BaseActor extends Group {
 
   public void setAnimation(Animation<TextureRegion> anim) {
     animation = anim;
-    var tr = animation.getKeyFrame(0);
-    float w = tr.getRegionWidth();
-    float h = tr.getRegionHeight();
+    var textureRegion = animation.getKeyFrame(0);
+    float w = textureRegion.getRegionWidth();
+    float h = textureRegion.getRegionHeight();
     setSize(w, h);
     setOrigin(w / 2, h / 2);
 
@@ -128,11 +128,9 @@ public class BaseActor extends Group {
   }
 
   public Animation<TextureRegion> loadAnimationFromFiles(String[] fileNames, float frameDuration, boolean loop) {
-    int fileCount = fileNames.length;
     Array<TextureRegion> textureRegionArray = new Array<>();
 
-    for (int i = 0; i < fileCount; i++) {
-      var fileName = fileNames[i];
+    for (String fileName : fileNames) {
       var texture = new Texture(Gdx.files.internal(fileName));
       texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
       textureRegionArray.add(new TextureRegion(texture));
