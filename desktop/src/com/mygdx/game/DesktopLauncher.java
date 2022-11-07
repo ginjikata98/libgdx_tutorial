@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.mygdx.game.breakout.BreakoutGame;
+import com.mygdx.game.cardpickup.CardPickupGame;
 import com.mygdx.game.drop.Drop;
 import com.mygdx.game.planedodger.PlaneDodgerGame;
 import com.mygdx.game.puzzle.PuzzleGame;
@@ -19,12 +20,13 @@ public class DesktopLauncher {
     planedodger,
     breakout,
     puzzle,
+    cardpickup,
   }
 
   public static void main(String[] arg) {
     var config = new Lwjgl3ApplicationConfiguration();
     Game app = null;
-    var game = Games.puzzle;
+    var game = Games.cardpickup;
 
     switch (game) {
       case drop -> {
@@ -68,6 +70,13 @@ public class DesktopLauncher {
         config.useVsync(true);
         config.setForegroundFPS(60);
         app = new PuzzleGame();
+      }
+      case cardpickup -> {
+        config.setTitle("Card pickup");
+        config.setWindowedMode(800, 600);
+        config.useVsync(true);
+        config.setForegroundFPS(60);
+        app = new CardPickupGame();
       }
     }
 
