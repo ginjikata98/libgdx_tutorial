@@ -67,13 +67,13 @@ public class LevelScreen extends BaseScreen {
     uiTable.row();
     uiTable.add(messageLabel).colspan(3).expandY();
 
-    bounceSound = Gdx.audio.newSound(Gdx.files.internal("assets/boing.wav"));
-    brickBumpSound = Gdx.audio.newSound(Gdx.files.internal("assets/bump.wav"));
-    wallBumpSound = Gdx.audio.newSound(Gdx.files.internal("assets/bump-low.wav"));
-    itemAppearSound = Gdx.audio.newSound(Gdx.files.internal("assets/swoosh.wav"));
-    itemCollectSound = Gdx.audio.newSound(Gdx.files.internal("assets/pop.wav"));
+    bounceSound = Gdx.audio.newSound(Gdx.files.internal("breakout/boing.wav"));
+    brickBumpSound = Gdx.audio.newSound(Gdx.files.internal("breakout/bump.wav"));
+    wallBumpSound = Gdx.audio.newSound(Gdx.files.internal("breakout/bump-low.wav"));
+    itemAppearSound = Gdx.audio.newSound(Gdx.files.internal("breakout/swoosh.wav"));
+    itemCollectSound = Gdx.audio.newSound(Gdx.files.internal("breakout/pop.wav"));
 
-    backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/Rollin-at-5.mp3"));
+    backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("breakout/Rollin-at-5.mp3"));
     backgroundMusic.setLooping(true);
     backgroundMusic.setVolume(0.50f);
     backgroundMusic.play();
