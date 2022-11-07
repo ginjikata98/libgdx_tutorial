@@ -1,6 +1,8 @@
 package com.mygdx.game.breakout;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -16,6 +18,12 @@ public class LevelScreen extends BaseScreen {
   Label scoreLabel;
   Label ballsLabel;
   Label messageLabel;
+  Sound bounceSound;
+  Sound brickBumpSound;
+  Sound wallBumpSound;
+  Sound itemAppearSound;
+  Sound itemCollectSound;
+  Music backgroundMusic;
 
   @Override
   public void initialize() {
@@ -58,6 +66,17 @@ public class LevelScreen extends BaseScreen {
     uiTable.add(ballsLabel);
     uiTable.row();
     uiTable.add(messageLabel).colspan(3).expandY();
+
+    bounceSound = Gdx.audio.newSound(Gdx.files.internal("assets/boing.wav"));
+    brickBumpSound = Gdx.audio.newSound(Gdx.files.internal("assets/bump.wav"));
+    wallBumpSound = Gdx.audio.newSound(Gdx.files.internal("assets/bump-low.wav"));
+    itemAppearSound = Gdx.audio.newSound(Gdx.files.internal("assets/swoosh.wav"));
+    itemCollectSound = Gdx.audio.newSound(Gdx.files.internal("assets/pop.wav"));
+
+    backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/Rollin-at-5.mp3"));
+    backgroundMusic.setLooping(true);
+    backgroundMusic.setVolume(0.50f);
+    backgroundMusic.play();
   }
 
   @Override
@@ -74,6 +93,7 @@ public class LevelScreen extends BaseScreen {
     for (BaseActor wall : BaseActor.getList(mainStage, Wall.class.getCanonicalName())) {
       if (ball.overlaps(wall)) {
         ball.bounceOff(wall);
+        wallBumpSound.play();
       }
     }
 
@@ -83,11 +103,13 @@ public class LevelScreen extends BaseScreen {
         brick.remove();
         score += 100;
         scoreLabel.setText("Score: " + score);
+        brickBumpSound.play();
 
         float spawnProbability = 20;
         if (MathUtils.random(0, 100) < spawnProbability) {
           var item = new Item(mainStage);
           item.centerAtActor(brick);
+          itemAppearSound.play();
         }
       }
     }
@@ -97,6 +119,7 @@ public class LevelScreen extends BaseScreen {
       float paddlePercentHit = (ballCenterX - paddle.getX()) / paddle.getWidth();
       float bounceAngle = MathUtils.lerp(150, 30, paddlePercentHit);
       ball.setMotionAngle(bounceAngle);
+      bounceSound.play();
     }
 
     if (BaseActor.count(mainStage, Brick.class.getCanonicalName()) == 0) {
@@ -123,6 +146,7 @@ public class LevelScreen extends BaseScreen {
 
     for (BaseActor item : BaseActor.getList(mainStage, Item.class.getCanonicalName())) {
       if (paddle.overlaps(item)) {
+        itemCollectSound.play();
         var realItem = (Item) item;
         if (realItem.getType() == Item.Type.PADDLE_EXPAND)
           paddle.setWidth(paddle.getWidth() * 1.25f);
