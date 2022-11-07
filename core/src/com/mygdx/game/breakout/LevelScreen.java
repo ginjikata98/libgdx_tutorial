@@ -1,11 +1,13 @@
 package com.mygdx.game.breakout;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.base.BaseActor;
 import com.mygdx.game.base.BaseScreen;
 
 public class LevelScreen extends BaseScreen {
   private Paddle paddle;
+  private Ball ball;
 
   @Override
   public void initialize() {
@@ -32,6 +34,8 @@ public class LevelScreen extends BaseScreen {
         new Brick(x, y, mainStage);
       }
     }
+
+    ball = new Ball(mainStage);
   }
 
   @Override
@@ -39,5 +43,37 @@ public class LevelScreen extends BaseScreen {
     float mouseX = Gdx.input.getX();
     paddle.setX(mouseX - paddle.getWidth() / 2);
     paddle.boundToWorld();
+
+    if (ball.isPaused()) {
+      ball.setX(paddle.getX() + paddle.getWidth() / 2 - ball.getWidth() / 2);
+      ball.setY(paddle.getY() + paddle.getHeight() / 2 + ball.getHeight() / 2);
+    }
+
+    for (BaseActor wall : BaseActor.getList(mainStage, Wall.class.getCanonicalName())) {
+      if (ball.overlaps(wall)) {
+        ball.bounceOff(wall);
+      }
+    }
+
+    for (BaseActor brick : BaseActor.getList(mainStage, Brick.class.getCanonicalName())) {
+      if (ball.overlaps(brick)) {
+        ball.bounceOff(brick);
+        brick.remove();
+      }
+    }
+
+    if (ball.overlaps(paddle)) {
+      float ballCenterX = ball.getX() + ball.getWidth() / 2;
+      float paddlePercentHit = (ballCenterX - paddle.getX()) / paddle.getWidth();
+      float bounceAngle = MathUtils.lerp(150, 30, paddlePercentHit);
+      ball.setMotionAngle(bounceAngle);
+    }
+  }
+
+  public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+    if (ball.isPaused()) {
+      ball.setPaused(false);
+    }
+    return false;
   }
 }
