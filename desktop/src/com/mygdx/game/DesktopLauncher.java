@@ -34,50 +34,36 @@ public class DesktopLauncher {
       case drop -> {
         config.setTitle("Drop");
         config.setWindowedMode(800, 480);
-        config.useVsync(true);
-        config.setForegroundFPS(60);
         app = new Drop();
       }
       case starfish -> {
         config.setTitle("Starfish Collector");
         config.setWindowedMode(800, 600);
-        config.useVsync(true);
-        config.setForegroundFPS(60);
         app = new StarfishGame();
       }
       case spacerocks -> {
         config.setTitle("Space Rocks");
         config.setWindowedMode(800, 600);
-        config.useVsync(true);
-        config.setForegroundFPS(60);
         app = new SpaceGame();
       }
       case planedodger -> {
         config.setTitle("Plane Dodger");
         config.setWindowedMode(800, 600);
-        config.useVsync(true);
-        config.setForegroundFPS(60);
         app = new PlaneDodgerGame();
       }
       case breakout -> {
         config.setTitle("Breakout");
         config.setWindowedMode(800, 600);
-        config.useVsync(true);
-        config.setForegroundFPS(60);
         app = new BreakoutGame();
       }
       case puzzle -> {
         config.setTitle("Puzzle");
         config.setWindowedMode(800, 600);
-        config.useVsync(true);
-        config.setForegroundFPS(60);
         app = new PuzzleGame();
       }
       case cardpickup -> {
         config.setTitle("Card pickup");
         config.setWindowedMode(800, 600);
-        config.useVsync(true);
-        config.setForegroundFPS(60);
         app = new CardPickupGame();
       }
       case jumpingjack -> {
