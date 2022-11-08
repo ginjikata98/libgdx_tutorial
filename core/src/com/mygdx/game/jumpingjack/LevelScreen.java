@@ -44,6 +44,11 @@ public class LevelScreen extends BaseScreen {
       new Coin((float) props.get("x"), (float) props.get("y"), mainStage);
     }
 
+    for (var obj : tma.getTileList("Timer")) {
+      var props = obj.getProperties();
+      new Timer((float) props.get("x"), (float) props.get("y"), mainStage);
+    }
+
 
     gameOver = false;
     coins = 0;
@@ -85,6 +90,23 @@ public class LevelScreen extends BaseScreen {
         coinLabel.setText("Coins: " + coins);
         coin.remove();
       }
+    }
+
+    time -= dt;
+    timeLabel.setText("Time: " + (int) time);
+    for (BaseActor timer : BaseActor.getList(mainStage, Timer.class.getCanonicalName())) {
+      if (jack.overlaps(timer)) {
+        time += 20;
+        timer.remove();
+      }
+    }
+
+    if (time <= 0) {
+      messageLabel.setText("Time Up - Game Over");
+      messageLabel.setColor(Color.RED);
+      messageLabel.setVisible(true);
+      jack.remove();
+      gameOver = true;
     }
 
     for (var actor : BaseActor.getList(mainStage, Solid.class.getCanonicalName())) {
