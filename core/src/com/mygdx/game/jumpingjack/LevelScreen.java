@@ -1,5 +1,6 @@
 package com.mygdx.game.jumpingjack;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
@@ -47,6 +48,17 @@ public class LevelScreen extends BaseScreen {
     for (var obj : tma.getTileList("Timer")) {
       var props = obj.getProperties();
       new Timer((float) props.get("x"), (float) props.get("y"), mainStage);
+    }
+
+    for (var obj : tma.getTileList("Springboard")) {
+      var props = obj.getProperties();
+      new Springboard((float) props.get("x"), (float) props.get("y"), mainStage);
+    }
+    jack.toFront();
+
+    for (var obj : tma.getTileList("Platform")) {
+      var props = obj.getProperties();
+      new Platform((float) props.get("x"), (float) props.get("y"), mainStage);
     }
 
 
@@ -109,8 +121,22 @@ public class LevelScreen extends BaseScreen {
       gameOver = true;
     }
 
+    for (BaseActor springboard : BaseActor.getList(mainStage, Springboard.class.getCanonicalName())) {
+      if (jack.belowOverlaps(springboard) && jack.isFalling()) {
+        jack.spring();
+      }
+    }
+
     for (var actor : BaseActor.getList(mainStage, Solid.class.getCanonicalName())) {
       Solid solid = (Solid) actor;
+      if (solid instanceof Platform) {
+        if (jack.isJumping() && jack.overlaps(solid))
+          solid.setEnabled(false);
+        if (jack.isJumping() && !jack.overlaps(solid))
+          solid.setEnabled(true);
+        if (jack.isFalling() && !jack.overlaps(solid) && !jack.belowOverlaps(solid))
+          solid.setEnabled(true);
+      }
       if (jack.overlaps(solid) && solid.isEnabled()) {
         Vector2 offset = jack.preventOverlap(solid);
         if (offset != null) {
@@ -125,8 +151,17 @@ public class LevelScreen extends BaseScreen {
   }
 
   public boolean keyDown(int keyCode) {
+    if (gameOver)
+      return false;
     if (keyCode == Input.Keys.SPACE) {
-      if (jack.isOnSolid()) {
+      if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        for (BaseActor actor : BaseActor.getList(mainStage, Platform.class.getCanonicalName())) {
+          Platform platform = (Platform) actor;
+          if (jack.belowOverlaps(platform)) {
+            platform.setEnabled(false);
+          }
+        }
+      } else if (jack.isOnSolid()) {
         jack.jump();
       }
     }

@@ -2,7 +2,6 @@ package com.mygdx.game.jumpingjack;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -28,13 +27,13 @@ public class Koala extends BaseActor {
         {"jumpingjack/koala/walk-1.png", "jumpingjack/koala/walk-2.png",
             "jumpingjack/koala/walk-3.png", "jumpingjack/koala/walk-2.png"};
     walk = loadAnimationFromFiles(walkFileNames, 0.2f, true);
-    maxHorizontalSpeed = 100;
+    maxHorizontalSpeed = 400;
     walkAcceleration = 200;
     walkDeceleration = 700;
     gravity = 1000;
     maxVerticalSpeed = 400;
     jump = loadTexture("jumpingjack/koala/jump.png");
-    jumpSpeed = 450;
+    jumpSpeed = 500;
     setBoundaryPolygon(6);
     belowSensor = new BaseActor(0, 0, s);
     belowSensor.loadTexture("jumpingjack/white.png");
@@ -106,5 +105,17 @@ public class Koala extends BaseActor {
 
   public void jump() {
     velocityVec.y = jumpSpeed;
+  }
+
+  public boolean isFalling() {
+    return (velocityVec.y < 0);
+  }
+
+  public void spring() {
+    velocityVec.y = 1.5f * jumpSpeed;
+  }
+
+  public boolean isJumping() {
+    return (velocityVec.y > 0);
   }
 }
