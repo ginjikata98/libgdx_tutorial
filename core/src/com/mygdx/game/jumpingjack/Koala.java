@@ -32,7 +32,7 @@ public class Koala extends BaseActor {
     walkAcceleration = 200;
     walkDeceleration = 700;
     gravity = 1000;
-    maxVerticalSpeed = 200;
+    maxVerticalSpeed = 400;
     jump = loadTexture("jumpingjack/koala/jump.png");
     jumpSpeed = 450;
     setBoundaryPolygon(6);
@@ -40,7 +40,7 @@ public class Koala extends BaseActor {
     belowSensor.loadTexture("jumpingjack/white.png");
     belowSensor.setSize(this.getWidth() - 8, 8);
     belowSensor.setBoundaryRectangle();
-    belowSensor.setVisible(true);
+    belowSensor.setVisible(false);
   }
 
   public void act(float dt) {
@@ -67,25 +67,19 @@ public class Koala extends BaseActor {
       velocityVec.x = walkSpeed * walkDirection;
     }
 
-
     velocityVec.x = MathUtils.clamp(velocityVec.x, -maxHorizontalSpeed, maxHorizontalSpeed);
-    velocityVec.y = MathUtils.clamp(velocityVec.y, -maxVerticalSpeed, maxVerticalSpeed);
+//    velocityVec.y = MathUtils.clamp(velocityVec.y, -maxVerticalSpeed, maxVerticalSpeed);
 
     moveBy(velocityVec.x * dt, velocityVec.y * dt);
     accelerationVec.set(0, 0);
     belowSensor.setPosition(getX() + 4, getY() - 8);
 
-    alignCamera();
-    boundToWorld();
-
     if (this.isOnSolid()) {
-      belowSensor.setColor(Color.GREEN);
       if (velocityVec.x == 0)
         setAnimation(stand);
       else
         setAnimation(walk);
     } else {
-      belowSensor.setColor(Color.RED);
       setAnimation(jump);
     }
     if (velocityVec.x > 0) // face right
@@ -93,6 +87,8 @@ public class Koala extends BaseActor {
     if (velocityVec.x < 0) // face left
       setScaleX(-1);
 
+    alignCamera();
+    boundToWorld();
   }
 
   public boolean belowOverlaps(BaseActor actor) {
