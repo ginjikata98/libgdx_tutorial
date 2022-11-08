@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.game.base.BaseActor;
 import com.mygdx.game.base.BaseGame;
 import com.mygdx.game.base.BaseScreen;
+import com.mygdx.game.base.TilemapActor;
 
 public class LevelScreen extends BaseScreen {
   private Turtle turtle;

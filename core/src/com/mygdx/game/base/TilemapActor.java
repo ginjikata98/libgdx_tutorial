@@ -1,4 +1,4 @@
-package com.mygdx.game.starfish;
+package com.mygdx.game.base;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
