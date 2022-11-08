@@ -3,12 +3,15 @@ package com.mygdx.game.jumpingjack;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.game.base.BaseActor;
 import com.mygdx.game.base.BaseGame;
 import com.mygdx.game.base.BaseScreen;
 import com.mygdx.game.base.TilemapActor;
+
+import java.util.ArrayList;
 
 public class LevelScreen extends BaseScreen {
   Koala jack;
@@ -19,6 +22,7 @@ public class LevelScreen extends BaseScreen {
   Table keyTable;
   Label timeLabel;
   Label messageLabel;
+  ArrayList<Color> keyList;
 
   @Override
   public void initialize() {
@@ -60,6 +64,26 @@ public class LevelScreen extends BaseScreen {
       new Platform((float) props.get("x"), (float) props.get("y"), mainStage);
     }
 
+    keyList = new ArrayList<>();
+
+    for (var obj : tma.getTileList("Key")) {
+      var props = obj.getProperties();
+      var key = new Key((float) props.get("x"), (float) props.get("y"), mainStage);
+      var color = (String) props.get("color");
+      if (color.equals("red"))
+        key.setColor(Color.RED);
+      else // default color
+        key.setColor(Color.WHITE);
+    }
+    for (var obj : tma.getTileList("Lock")) {
+      var props = obj.getProperties();
+      var lock = new Lock((float) props.get("x"), (float) props.get("y"), mainStage);
+      var color = (String) props.get("color");
+      if (color.equals("red"))
+        lock.setColor(Color.RED);
+      else // default color
+        lock.setColor(Color.WHITE);
+    }
 
     gameOver = false;
     coins = 0;
@@ -126,6 +150,18 @@ public class LevelScreen extends BaseScreen {
       }
     }
 
+    for (var key : BaseActor.getList(mainStage, Key.class.getCanonicalName())) {
+      if (jack.overlaps(key)) {
+        var keyColor = key.getColor();
+        key.remove();
+        var keyIcon = new BaseActor(0, 0, uiStage);
+        keyIcon.loadTexture("jumpingjack/key-icon.png");
+        keyIcon.setColor(keyColor);
+        keyTable.add(keyIcon);
+        keyList.add(keyColor);
+      }
+    }
+
     for (var actor : BaseActor.getList(mainStage, Solid.class.getCanonicalName())) {
       Solid solid = (Solid) actor;
       if (solid instanceof Platform) {
@@ -136,6 +172,16 @@ public class LevelScreen extends BaseScreen {
         if (jack.isFalling() && !jack.overlaps(solid) && !jack.belowOverlaps(solid))
           solid.setEnabled(true);
       }
+
+      if (solid instanceof Lock && jack.overlaps(solid)) {
+        var lockColor = solid.getColor();
+        if (keyList.contains(lockColor)) {
+          solid.setEnabled(false);
+          solid.addAction(Actions.fadeOut(0.5f));
+          solid.addAction(Actions.after(Actions.removeActor()));
+        }
+      }
+
       if (jack.overlaps(solid) && solid.isEnabled()) {
         var offset = jack.preventOverlap(solid);
         if (offset != null) {
