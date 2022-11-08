@@ -2,7 +2,6 @@ package com.mygdx.game.jumpingjack;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -40,6 +39,11 @@ public class LevelScreen extends BaseScreen {
       new Flag((float) props.get("x"), (float) props.get("y"), mainStage);
     }
 
+    for (var obj : tma.getTileList("Coin")) {
+      var props = obj.getProperties();
+      new Coin((float) props.get("x"), (float) props.get("y"), mainStage);
+    }
+
 
     gameOver = false;
     coins = 0;
@@ -72,6 +76,14 @@ public class LevelScreen extends BaseScreen {
         messageLabel.setVisible(true);
         jack.remove();
         gameOver = true;
+      }
+    }
+
+    for (BaseActor coin : BaseActor.getList(mainStage, Coin.class.getCanonicalName())) {
+      if (jack.overlaps(coin)) {
+        coins++;
+        coinLabel.setText("Coins: " + coins);
+        coin.remove();
       }
     }
 
