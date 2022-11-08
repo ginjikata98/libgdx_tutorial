@@ -26,22 +26,26 @@ public class LevelScreen extends BaseScreen {
 
   @Override
   public void initialize() {
-    var ocean = new BaseActor(mainStage);
-    ocean.loadTexture("starfish/water-border.jpg");
-    ocean.setSize(1200, 900);
-    BaseActor.setWorldBounds(ocean);
+    var tma = new TilemapActor("starfish/map.tmx", mainStage);
 
-    new Starfish(400, 400, mainStage);
-    new Starfish(500, 100, mainStage);
-    new Starfish(100, 450, mainStage);
-    new Starfish(200, 250, mainStage);
+    for (var obj : tma.getTileList("Starfish")) {
+      var props = obj.getProperties();
+      new Starfish((float) props.get("x"), (float) props.get("y"), mainStage);
+    }
 
-    new Rock(200, 150, mainStage);
-    new Rock(100, 300, mainStage);
-    new Rock(300, 350, mainStage);
-    new Rock(450, 200, mainStage);
+    for (var obj : tma.getTileList("Rock")) {
+      var props = obj.getProperties();
+      new Rock((float) props.get("x"), (float) props.get("y"), mainStage);
+    }
+    for (var obj : tma.getTileList("Sign")) {
+      var props = obj.getProperties();
+      var s = new Sign((float) props.get("x"), (float) props.get("y"), mainStage);
+      s.setText((String) props.get("message"));
+    }
 
-    turtle = new Turtle(20, 20, mainStage);
+    var startPoint = tma.getRectangleList("start").get(0);
+    var props = startPoint.getProperties();
+    turtle = new Turtle((float) props.get("x"), (float) props.get("y"), mainStage);
 
     starfishLabel = new Label("Starfish left:", BaseGame.labelStyle);
     starfishLabel.setColor(Color.CYAN);
@@ -82,19 +86,13 @@ public class LevelScreen extends BaseScreen {
       return true;
     });
 
-
     uiStage.addActor(restartButton);
-
     uiTable.pad(10);
     uiTable.add(starfishLabel).top();
     uiTable.add().expandX().expandY();
     uiTable.add(restartButton).top();
     uiTable.add(muteButton).top();
 
-    var sign1 = new Sign(20, 400, mainStage);
-    sign1.setText("West Starfish Bay");
-    var sign2 = new Sign(600, 300, mainStage);
-    sign2.setText("East Starfish Bay");
     dialogBox = new DialogBox(0, 0, uiStage);
     dialogBox.setBackgroundColor(Color.TAN);
     dialogBox.setFontColor(Color.BROWN);
