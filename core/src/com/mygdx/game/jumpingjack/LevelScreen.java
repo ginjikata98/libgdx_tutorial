@@ -3,7 +3,6 @@ package com.mygdx.game.jumpingjack;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.game.base.BaseActor;
@@ -86,7 +85,7 @@ public class LevelScreen extends BaseScreen {
   public void update(float dt) {
     if (gameOver)
       return;
-    for (BaseActor flag : BaseActor.getList(mainStage, Flag.class.getCanonicalName())) {
+    for (var flag : BaseActor.getList(mainStage, Flag.class.getCanonicalName())) {
       if (jack.overlaps(flag)) {
         messageLabel.setText("You Win!");
         messageLabel.setColor(Color.LIME);
@@ -96,7 +95,7 @@ public class LevelScreen extends BaseScreen {
       }
     }
 
-    for (BaseActor coin : BaseActor.getList(mainStage, Coin.class.getCanonicalName())) {
+    for (var coin : BaseActor.getList(mainStage, Coin.class.getCanonicalName())) {
       if (jack.overlaps(coin)) {
         coins++;
         coinLabel.setText("Coins: " + coins);
@@ -106,7 +105,7 @@ public class LevelScreen extends BaseScreen {
 
     time -= dt;
     timeLabel.setText("Time: " + (int) time);
-    for (BaseActor timer : BaseActor.getList(mainStage, Timer.class.getCanonicalName())) {
+    for (var timer : BaseActor.getList(mainStage, Timer.class.getCanonicalName())) {
       if (jack.overlaps(timer)) {
         time += 20;
         timer.remove();
@@ -121,7 +120,7 @@ public class LevelScreen extends BaseScreen {
       gameOver = true;
     }
 
-    for (BaseActor springboard : BaseActor.getList(mainStage, Springboard.class.getCanonicalName())) {
+    for (var springboard : BaseActor.getList(mainStage, Springboard.class.getCanonicalName())) {
       if (jack.belowOverlaps(springboard) && jack.isFalling()) {
         jack.spring();
       }
@@ -138,7 +137,7 @@ public class LevelScreen extends BaseScreen {
           solid.setEnabled(true);
       }
       if (jack.overlaps(solid) && solid.isEnabled()) {
-        Vector2 offset = jack.preventOverlap(solid);
+        var offset = jack.preventOverlap(solid);
         if (offset != null) {
           // collided in X direction
           if (Math.abs(offset.x) > Math.abs(offset.y))
@@ -151,12 +150,11 @@ public class LevelScreen extends BaseScreen {
   }
 
   public boolean keyDown(int keyCode) {
-    if (gameOver)
-      return false;
+    if (gameOver) return false;
     if (keyCode == Input.Keys.SPACE) {
       if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-        for (BaseActor actor : BaseActor.getList(mainStage, Platform.class.getCanonicalName())) {
-          Platform platform = (Platform) actor;
+        for (var actor : BaseActor.getList(mainStage, Platform.class.getCanonicalName())) {
+          var platform = (Platform) actor;
           if (jack.belowOverlaps(platform)) {
             platform.setEnabled(false);
           }
