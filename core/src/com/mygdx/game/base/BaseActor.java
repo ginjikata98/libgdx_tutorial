@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 
-
 public class BaseActor extends Group {
   private static Rectangle worldBounds;
   private Animation<TextureRegion> animation;
@@ -42,44 +41,25 @@ public class BaseActor extends Group {
     this(0, 0, s);
   }
 
-  public static void setWorldBounds(float width, float height) {
-    worldBounds = new Rectangle(0, 0, width, height);
-  }
-
-  public static void setWorldBounds(BaseActor ba) {
-    setWorldBounds(ba.getWidth(), ba.getHeight());
-  }
-
-  public static Array<BaseActor> getList(Stage stage, String className) {
-    Array<BaseActor> list = new Array<>();
-
-    Class theClass = null;
-
-    try {
-      theClass = ClassReflection.forName(className);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    for (var a : stage.getActors()) {
-      if (theClass.isInstance(a)) {
-        list.add((BaseActor) a);
-      }
-    }
-
-    return list;
-  }
-
-  public static int count(Stage stage, String className) {
-    return getList(stage, className).size;
-  }
-
   public void act(float dt) {
     super.act(dt);
 
     if (!animationPaused) {
       elapsedTime += dt;
     }
+  }
+
+  public void draw(Batch batch, float parentAlpha) {
+    var color = getColor();
+    batch.setColor(color.r, color.g, color.b, color.a);
+
+    if (animation != null && isVisible()) {
+      batch.draw(animation.getKeyFrame(elapsedTime),
+          getX(), getY(), getOriginX(), getOriginY(),
+          getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+    }
+
+    super.draw(batch, parentAlpha);
   }
 
   public void boundToWorld() {
@@ -95,19 +75,6 @@ public class BaseActor extends Group {
     if (getY() + getHeight() > worldBounds.height) {
       setY(worldBounds.height - getHeight());
     }
-  }
-
-  public void draw(Batch batch, float parentAlpha) {
-    var color = getColor();
-    batch.setColor(color.r, color.g, color.b, color.a);
-
-    if (animation != null && isVisible()) {
-      batch.draw(animation.getKeyFrame(elapsedTime),
-          getX(), getY(), getOriginX(), getOriginY(),
-          getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
-    }
-
-    super.draw(batch, parentAlpha);
   }
 
   public void setAnimation(Animation<TextureRegion> anim) {
@@ -174,14 +141,14 @@ public class BaseActor extends Group {
     return anim;
   }
 
+  public boolean isAnimationFinished() {
+    return animation.isAnimationFinished(elapsedTime);
+  }
+
   public Animation<TextureRegion> loadTexture(String fileName) {
     String[] fileNames = new String[1];
     fileNames[0] = fileName;
     return loadAnimationFromFiles(fileNames, 1, true);
-  }
-
-  public boolean isAnimationFinished() {
-    return animation.isAnimationFinished(elapsedTime);
   }
 
   public float getSpeed() {
@@ -355,5 +322,35 @@ public class BaseActor extends Group {
     return worldBounds;
   }
 
+  public static void setWorldBounds(float width, float height) {
+    worldBounds = new Rectangle(0, 0, width, height);
+  }
 
+  public static void setWorldBounds(BaseActor ba) {
+    setWorldBounds(ba.getWidth(), ba.getHeight());
+  }
+
+  public static Array<BaseActor> getList(Stage stage, String className) {
+    Array<BaseActor> list = new Array<>();
+
+    Class theClass = null;
+
+    try {
+      theClass = ClassReflection.forName(className);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    for (var a : stage.getActors()) {
+      if (theClass.isInstance(a)) {
+        list.add((BaseActor) a);
+      }
+    }
+
+    return list;
+  }
+
+  public static int count(Stage stage, String className) {
+    return getList(stage, className).size;
+  }
 }

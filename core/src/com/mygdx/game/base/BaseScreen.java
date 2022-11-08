@@ -30,11 +30,6 @@ public abstract class BaseScreen implements Screen, InputProcessor {
     initialize();
   }
 
-  public abstract void initialize();
-
-  public abstract void update(float dt);
-
-
   public void render(float dt) {
     mainStage.act(dt);
     uiStage.act(dt);
@@ -45,15 +40,6 @@ public abstract class BaseScreen implements Screen, InputProcessor {
 
     mainStage.draw();
     uiStage.draw();
-  }
-
-  public void resize(int width, int height) {
-  }
-
-  public void pause() {
-  }
-
-  public void resume() {
   }
 
   public void show() {
@@ -70,6 +56,25 @@ public abstract class BaseScreen implements Screen, InputProcessor {
     im.removeProcessor(this);
     im.removeProcessor(uiStage);
     im.removeProcessor(mainStage);
+  }
+
+  public boolean isTouchDownEvent(Event e) {
+    return (e instanceof InputEvent) && ((InputEvent) e).getType().equals(InputEvent.Type.touchDown);
+  }
+
+
+  public abstract void initialize();
+
+  public abstract void update(float dt);
+
+
+  public void resize(int width, int height) {
+  }
+
+  public void pause() {
+  }
+
+  public void resume() {
   }
 
   public void dispose() {
@@ -108,10 +113,6 @@ public abstract class BaseScreen implements Screen, InputProcessor {
 
   public boolean touchUp(int screenX, int screenY, int pointer, int button) {
     return false;
-  }
-
-  public boolean isTouchDownEvent(Event e) {
-    return (e instanceof InputEvent) && ((InputEvent) e).getType().equals(InputEvent.Type.touchDown);
   }
 
 }
