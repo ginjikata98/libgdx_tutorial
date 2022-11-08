@@ -16,8 +16,8 @@ public class BaseActor extends Group {
   private Animation<TextureRegion> animation;
   private float elapsedTime;
   private boolean animationPaused;
-  protected Vector2 velocityVec;
-  private Vector2 accelerationVec;
+  public Vector2 velocityVec;
+  public Vector2 accelerationVec;
   private float acceleration;
   private float maxSpeed;
   private float deceleration;

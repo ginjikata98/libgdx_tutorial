@@ -6,6 +6,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.mygdx.game.breakout.BreakoutGame;
 import com.mygdx.game.cardpickup.CardPickupGame;
 import com.mygdx.game.drop.Drop;
+import com.mygdx.game.jumpingjack.JumpingJackGame;
 import com.mygdx.game.planedodger.PlaneDodgerGame;
 import com.mygdx.game.puzzle.PuzzleGame;
 import com.mygdx.game.spacerocks.SpaceGame;
@@ -21,12 +22,13 @@ public class DesktopLauncher {
     breakout,
     puzzle,
     cardpickup,
+    jumpingjack,
   }
 
   public static void main(String[] arg) {
     var config = new Lwjgl3ApplicationConfiguration();
     Game app = null;
-    var game = Games.starfish;
+    var game = Games.jumpingjack;
 
     switch (game) {
       case drop -> {
@@ -77,6 +79,13 @@ public class DesktopLauncher {
         config.useVsync(true);
         config.setForegroundFPS(60);
         app = new CardPickupGame();
+      }
+      case jumpingjack -> {
+        config.setTitle("Jumping Jack");
+        config.setWindowedMode(800, 600);
+        config.useVsync(true);
+        config.setForegroundFPS(60);
+        app = new JumpingJackGame();
       }
     }
 
