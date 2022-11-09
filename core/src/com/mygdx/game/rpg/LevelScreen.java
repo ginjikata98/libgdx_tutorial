@@ -29,6 +29,15 @@ public class LevelScreen extends BaseScreen {
     sword = new Sword(0, 0, mainStage);
     sword.setVisible(false);
 
+    for (var obj : tma.getTileList("Bush")) {
+      var props = obj.getProperties();
+      new Bush((float) props.get("x"), (float) props.get("y"), mainStage);
+    }
+    for (var obj : tma.getTileList("Rock")) {
+      var props = obj.getProperties();
+      new Rock((float) props.get("x"), (float) props.get("y"), mainStage);
+    }
+
   }
 
   @Override
@@ -43,6 +52,14 @@ public class LevelScreen extends BaseScreen {
         hero.accelerateAtAngle(90);
       if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
         hero.accelerateAtAngle(270);
+    }
+
+
+    if (sword.isVisible()) {
+      for (BaseActor bush : BaseActor.getList(mainStage, Bush.class.getCanonicalName())) {
+        if (sword.overlaps(bush))
+          bush.remove();
+      }
     }
 
 
